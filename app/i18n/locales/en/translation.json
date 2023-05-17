@@ -1,0 +1,14 @@
+{
+  "search": "Search products",
+  "to-all": "View All",
+  "recent-articles": "Recent Articles",
+  "recent-products": "Recent Products",
+  "products": "Products",
+  "articles": "Articles",
+  "pagination": {
+    "page": "page",
+    "of": "of",
+    "prev": "Prev",
+    "next": "Next"
+  }
+}
