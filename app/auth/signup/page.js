@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-
+import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
 import { TypographyLead } from "@/components/Typography";
 
@@ -60,46 +60,58 @@ const LoginPage = () => {
         <div className="mb-8 min-h-[40px]">
           <Image src="/logo.png" width={200} height={120} alt="agitara logo" />
         </div>
-        {success ? (
-          <div>
-            <TypographyLead>
-              Please check your mail for confirmation link
-            </TypographyLead>
-          </div>
-        ) : (
-          <div className=" flex flex-col gap-4 lg:w-2/4 md:w-3/4 w-full">
-            <div className="flex flex-col gap-y-2 ">
-              {" "}
-              <Label htmlFor="userName">User Name:</Label>
-              <Input
-                id="userName"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col gap-y-2 ">
-              {" "}
-              <Label htmlFor="email">Email:</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col gap-y-2 ">
-              <Label htmlFor="password">Password:</Label>
-              <Input
-                id="password"
-                type={"password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+        <AnimatePresence initial={false}>
+          {success ? (
+            <motion.div
+              initial={{ y: -100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+            >
+              <TypographyLead>
+                Please check your mail for confirmation link
+              </TypographyLead>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ y: -100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              className=" flex flex-col gap-4 lg:w-2/4 md:w-3/4 w-full"
+            >
+              <div className="flex flex-col gap-y-2 ">
+                {" "}
+                <Label htmlFor="userName">User Name:</Label>
+                <Input
+                  id="userName"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-y-2 ">
+                {" "}
+                <Label htmlFor="email">Email:</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-y-2 ">
+                <Label htmlFor="password">Password:</Label>
+                <Input
+                  id="password"
+                  type={"password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
 
-            <Button onClick={handleRegister}>Sign Up</Button>
-          </div>
-        )}
+              <Button onClick={handleRegister}>Sign Up</Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <div className="mt-4">
           <p>
             Already have an account?{" "}
