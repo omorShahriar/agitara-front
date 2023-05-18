@@ -95,8 +95,6 @@ function dispatch(action) {
   });
 }
 
-int;
-
 function toast({ ...props }) {
   const id = genId();
 
@@ -127,7 +125,7 @@ function toast({ ...props }) {
 }
 
 function useToast() {
-  const [state, setState] = React.useState < State > memoryState;
+  const [state, setState] = React.useState(memoryState);
 
   React.useEffect(() => {
     listeners.push(setState);

@@ -7,6 +7,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ClientProviders from "@/components/ClientProviders";
 import qs from "qs";
+import { notFound } from "next/navigation";
 const strapiUrl =
   process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337";
 async function getSession(cookie) {
@@ -77,6 +78,10 @@ export const metadata = {
 };
 
 export default async function Layout({ children, params: { lng } }) {
+  if (!/(en|de)/.test(lng)) {
+    console.log("working, yes");
+    notFound();
+  }
   const serverCookie = headers().get("cookie");
   const [session, navElementsData, footerData] = await Promise.all([
     getSession(serverCookie ?? ""),

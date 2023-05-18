@@ -53,7 +53,6 @@ const LoginPage = () => {
   }
   return (
     <div className="container">
-      {" "}
       <div
         className={"flex flex-col justify-center items-center  h-screen gap-1"}
       >
@@ -112,11 +111,20 @@ const LoginPage = () => {
           )}
         </AnimatePresence>
 
-        <div className="mt-4">
+        <div className="mt-4 text-center">
           <p>
             Already have an account?{" "}
             <Link href="/auth/signin" className=" underline  ">
               Log in
+            </Link>
+          </p>
+          <p>
+            Return to{" "}
+            <Link
+              className=" hover:underline transition-all duration-200 "
+              href="/"
+            >
+              homepage
             </Link>
           </p>
         </div>
