@@ -3,6 +3,7 @@ version: "3"
 services:
   app:
     image: agitara-frontend
+    restart: unless-stopped
     build: .
     ports:
       - 3002:3000
