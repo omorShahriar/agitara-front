@@ -1,19 +1,18 @@
 "use client";
-
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { TypographyP } from "@/components/Typography";
 const LoginPage = () => {
   const searchParams = useSearchParams();
-
+  const [loading, setLoading] = useState(false);
   const callbackUrl = searchParams.get("callbackUrl");
-
   const email = useRef("");
   const pass = useRef("");
 
@@ -21,12 +20,13 @@ const LoginPage = () => {
     if (!email.current || !pass.current) {
       return null;
     }
-    const result = await signIn("credentials", {
+    setLoading(true);
+    await signIn("credentials", {
       email: email.current,
       password: pass.current,
       redirect: true,
       callbackUrl,
-    });
+    }).then((result) => setLoading(false));
   };
   return (
     <div className="container">
@@ -58,7 +58,9 @@ const LoginPage = () => {
           <Button
             className="p-2 bg-black text-white text-xl rounded-lg mt-4"
             onClick={onSubmit}
+            disabled={loading}
           >
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Login
           </Button>
         </div>

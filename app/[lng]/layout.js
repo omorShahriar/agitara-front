@@ -79,7 +79,6 @@ export const metadata = {
 
 export default async function Layout({ children, params: { lng } }) {
   if (!/(en|de)/.test(lng)) {
-    console.log("working, yes");
     notFound();
   }
   const serverCookie = headers().get("cookie");

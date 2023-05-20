@@ -20,7 +20,7 @@ export default async function handler(req, res) {
             },
           }
         );
-        console.log(data);
+        console.log({ likeData: data });
       } else {
         await fetch(`${strapiUrl}/api/${collectionName}s/${entryId}/unlike`, {
           method: "PUT",

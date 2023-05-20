@@ -2,7 +2,6 @@ import Link from "next/link";
 import { UserNav } from "./shared/UserNav";
 import { Button } from "./ui/button";
 const AccountBox = ({ session }) => {
-  console.log(session);
   return (
     <>
       {session ? (
