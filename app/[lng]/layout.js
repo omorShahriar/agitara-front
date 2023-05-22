@@ -1,7 +1,6 @@
 import { headers } from "next/headers";
 import AuthContext from "@/components/contexts/AuthContext";
 import { dir } from "i18next";
-import { languages } from "../i18n/settings";
 
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -10,6 +9,7 @@ import qs from "qs";
 import { notFound } from "next/navigation";
 const strapiUrl =
   process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337";
+export const revalidate = 300;
 async function getSession(cookie) {
   const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/session`, {
     headers: {
@@ -32,7 +32,7 @@ const getNavigationData = async (locale = "en") => {
     }
   );
   const url = `${strapiUrl}/api/main-menu?${query}`;
-  const res = await fetch(url, { next: { revalidate: 300 } });
+  const res = await fetch(url);
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
@@ -59,7 +59,7 @@ const getFooterData = async (locale = "en") => {
     }
   );
   const url = `${strapiUrl}/api/footer?${query}`;
-  const res = await fetch(url, { next: { revalidate: 300 } });
+  const res = await fetch(url);
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
@@ -95,7 +95,7 @@ export default async function Layout({ children, params: { lng } }) {
         <AuthContext session={session}>
           <ClientProviders>
             {" "}
-            <header className=" bg-white dark:bg-zinc-900 sticky top-0 z-50 ">
+            <header className=" sticky top-0 z-50 bg-white dark:bg-zinc-900 ">
               <Navigation
                 lang={lng}
                 session={session}
