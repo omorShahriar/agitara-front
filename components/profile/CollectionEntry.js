@@ -31,7 +31,7 @@ const CollectionEntry = ({ collection, name, jwt }) => {
     setLoading(false);
   };
   return (
-    <div className="md:col-span-6 col-span-12 flex justify-between items-center border rounded-md p-2">
+    <div className="col-span-12 flex items-center justify-between rounded-md border p-2 md:col-span-6">
       <Link
         className="hover:underline"
         href={`/${lang}/${name}/${collection.slug}`}
@@ -44,7 +44,7 @@ const CollectionEntry = ({ collection, name, jwt }) => {
         onClick={() => removeCollection(collection.id, jwt)}
       >
         {loading ? (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <Loader2 className=" h-4 w-4 animate-spin" />
         ) : (
           <Trash size={16} />
         )}

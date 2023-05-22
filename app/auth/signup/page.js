@@ -37,8 +37,14 @@ const LoginPage = () => {
           body: JSON.stringify(registerInfo),
         }
       );
-      const registerResponse = await register.json();
-      if (registerResponse) {
+      const res = await register.json();
+      if (res.error) {
+        setLoading(false);
+        toast({
+          variant: "destructive",
+          title: res.error.message,
+        });
+      } else {
         setUsername("");
         setEmail("");
         setPassword("");
@@ -50,10 +56,6 @@ const LoginPage = () => {
       setEmail("");
       setPassword("");
       setLoading(false);
-      toast({
-        title: "Something went wrong ",
-        description: "There might be a network issue.",
-      });
     }
   }
   return (

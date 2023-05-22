@@ -31,7 +31,7 @@ const LoginPage = () => {
         redirect: false,
       }).then(({ ok, error }) => {
         if (ok) {
-          window.location.href = process.env.NEXT_PUBLIC_URL;
+          window.location.href = callbackUrl ?? process.env.NEXT_PUBLIC_URL;
         }
         if (error) {
           setErrorMessage(error);
