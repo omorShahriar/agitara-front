@@ -23,27 +23,26 @@ export const authOptions = {
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
         if (credentials == null) return null;
-        try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/local`,
-            {
-              method: "POST",
-              body: JSON.stringify({
-                identifier: credentials.email,
-                password: credentials.password,
-              }),
-              headers: { "Content-Type": "application/json" },
-            }
-          );
 
-          const data = await res.json();
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/local`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              identifier: credentials.email,
+              password: credentials.password,
+            }),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
 
-          const { user, jwt } = data;
-          return { ...user, jwt };
-        } catch (error) {
-          // Sign In Fail
-          return null;
+        const data = await res.json();
+        console.log({ data });
+        if (data.error) {
+          throw new Error(data.error.message);
         }
+        const { user, jwt } = data;
+        return { ...user, jwt };
       },
     }),
   ],

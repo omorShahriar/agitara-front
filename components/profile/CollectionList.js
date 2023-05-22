@@ -13,11 +13,11 @@ const CollectionList = ({ serverCollection, collectionName, jwt }) => {
 
   return (
     <div className="mb-6">
-      {likedCollection.length != 0 && (
+      {likedCollection?.length != 0 && (
         <TypographyH3>Liked {collectionName}</TypographyH3>
       )}
       <div className="grid grid-cols-12 gap-2 mt-3">
-        {likedCollection.map((collectionEntry) => (
+        {likedCollection?.map((collectionEntry) => (
           <CollectionEntry
             key={collectionEntry.id}
             collection={collectionEntry}

@@ -21,7 +21,7 @@ async function getSession(cookie) {
 
   return Object.keys(session).length > 0 ? session : null;
 }
-const getNavigationData = async (locale) => {
+const getNavigationData = async (locale = "en") => {
   const query = qs.stringify(
     {
       populate: "deep",
@@ -41,7 +41,7 @@ const getNavigationData = async (locale) => {
   return data?.attributes?.body;
 };
 
-const getFooterData = async (locale) => {
+const getFooterData = async (locale = "en") => {
   const query = qs.stringify(
     {
       populate: {

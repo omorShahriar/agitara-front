@@ -7,36 +7,55 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { TypographyP } from "@/components/Typography";
+import { useRouter, useSearchParams } from "next/navigation";
+
 const LoginPage = () => {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const callbackUrl = searchParams.get("callbackUrl");
   const email = useRef("");
   const pass = useRef("");
-
+  const router = useRouter();
   const onSubmit = async () => {
     if (!email.current || !pass.current) {
       return null;
     }
-    setLoading(true);
-    await signIn("credentials", {
-      email: email.current,
-      password: pass.current,
-      redirect: true,
-      callbackUrl,
-    }).then((result) => setLoading(false));
+    try {
+      setLoading(true);
+      await signIn("credentials", {
+        email: email.current,
+        password: pass.current,
+        redirect: false,
+      }).then(({ ok, error }) => {
+        if (ok) {
+          router.push(callbackUrl);
+        }
+        if (error) {
+          setErrorMessage(error);
+        }
+
+        setLoading(false);
+      });
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   };
   return (
     <div className="container">
       <div
-        className={"flex flex-col justify-center items-center  h-screen gap-1"}
+        className={"flex h-screen flex-col items-center  justify-center gap-1"}
       >
         <div className="mb-8 min-h-[40px]">
           <Image src="/logo.png" width={200} height={120} alt="agitara logo" />
         </div>
-        <div className=" flex flex-col gap-4 lg:w-2/4 md:w-3/4 w-full">
+        {errorMessage && (
+          <div className="mb-4">
+            <p className="text-center text-sm text-red-600">{errorMessage}</p>
+          </div>
+        )}
+        <form className=" flex w-full flex-col gap-4 md:w-3/4 lg:w-2/4">
           <div className="flex flex-col gap-y-2 ">
             {" "}
             <Label htmlFor="email">Email:</Label>
@@ -54,16 +73,16 @@ const LoginPage = () => {
               onChange={(e) => (pass.current = e.target.value)}
             />
           </div>
-
           <Button
-            className="p-2 bg-black text-white text-xl rounded-lg mt-4"
+            className="mt-4 rounded-lg bg-black p-2 text-xl text-white"
             onClick={onSubmit}
             disabled={loading}
           >
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Login
           </Button>
-        </div>
+        </form>
+
         <div className="mt-4 text-center">
           <p>
             Don&apos;t have an account?{" "}
@@ -74,7 +93,7 @@ const LoginPage = () => {
           <p>
             Return to{" "}
             <Link
-              className=" hover:underline transition-all duration-200 "
+              className=" transition-all duration-200 hover:underline "
               href="/"
             >
               {" "}

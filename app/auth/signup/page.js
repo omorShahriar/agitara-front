@@ -8,12 +8,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 import { TypographyLead } from "@/components/Typography";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const { toast } = useToast();
   async function handleRegister() {
@@ -23,6 +25,7 @@ const LoginPage = () => {
       password: password,
     };
     try {
+      setLoading(true);
       const register = await fetch(
         `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/api/auth/local/register`,
         {
@@ -40,11 +43,13 @@ const LoginPage = () => {
         setEmail("");
         setPassword("");
         setSuccess(true);
+        setLoading(false);
       }
     } catch (error) {
       setUsername("");
       setEmail("");
       setPassword("");
+      setLoading(false);
       toast({
         title: "Something went wrong ",
         description: "There might be a network issue.",
@@ -54,7 +59,7 @@ const LoginPage = () => {
   return (
     <div className="container">
       <div
-        className={"flex flex-col justify-center items-center  h-screen gap-1"}
+        className={"flex h-screen flex-col items-center  justify-center gap-1"}
       >
         <div className="mb-8 min-h-[40px]">
           <Image src="/logo.png" width={200} height={120} alt="agitara logo" />
@@ -71,11 +76,11 @@ const LoginPage = () => {
               </TypographyLead>
             </motion.div>
           ) : (
-            <motion.div
+            <motion.form
               initial={{ y: -100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 100, opacity: 0 }}
-              className=" flex flex-col gap-4 lg:w-2/4 md:w-3/4 w-full"
+              className=" flex w-full flex-col gap-4 md:w-3/4 lg:w-2/4"
             >
               <div className="flex flex-col gap-y-2 ">
                 {" "}
@@ -106,8 +111,11 @@ const LoginPage = () => {
                 />
               </div>
 
-              <Button onClick={handleRegister}>Sign Up</Button>
-            </motion.div>
+              <Button disabled={loading} onClick={handleRegister}>
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Sign Up
+              </Button>
+            </motion.form>
           )}
         </AnimatePresence>
 
@@ -121,7 +129,7 @@ const LoginPage = () => {
           <p>
             Return to{" "}
             <Link
-              className=" hover:underline transition-all duration-200 "
+              className=" transition-all duration-200 hover:underline "
               href="/"
             >
               homepage
