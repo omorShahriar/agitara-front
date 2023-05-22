@@ -7,20 +7,22 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const LoginPage = () => {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
   const callbackUrl = searchParams.get("callbackUrl");
   const email = useRef("");
   const pass = useRef("");
-  const router = useRouter();
+
   const onSubmit = async () => {
+    setErrorMessage(null);
     if (!email.current || !pass.current) {
       return null;
     }
+
     try {
       setLoading(true);
       await signIn("credentials", {
@@ -29,12 +31,11 @@ const LoginPage = () => {
         redirect: false,
       }).then(({ ok, error }) => {
         if (ok) {
-          router.push(callbackUrl);
+          window.location.href = callbackUrl;
         }
         if (error) {
           setErrorMessage(error);
         }
-
         setLoading(false);
       });
     } catch (error) {

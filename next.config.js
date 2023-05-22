@@ -6,7 +6,7 @@ const nextConfig = {
   images: {
     domains: ["89.163.209.153", "localhost"],
   },
-  output: "standalone",
+  // output: "standalone",
 };
 
 module.exports = nextConfig;
